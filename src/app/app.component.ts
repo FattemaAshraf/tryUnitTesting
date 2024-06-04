@@ -10,4 +10,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'tryUnitTesting';
+
+  sayHello(){
+    return 'Hello World!'
+  }
+  // sayHello1(){
+  //   return 'Hello World!'
+  // }
 }
