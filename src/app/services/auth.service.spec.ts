@@ -86,6 +86,12 @@ describe('AuthService - mock data', () => {
       let req = httpMock.expectOne(
         `https://jsonplaceholder.typicode.com/posts/2`
       );
+      console.log(req.request.url)
+      //CHECK METHOD
+      expect(req.request.method).toEqual('GET');
+      // CHECK URL ALSOO
+      expect(req.request.url).toEqual('https://jsonplaceholder.typicode.com/posts/2');
+
       req.flush(postMoka);
       //check any requests not implemented
       httpMock.verify;
