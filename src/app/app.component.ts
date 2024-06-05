@@ -14,12 +14,6 @@ export class AppComponent {
   sayHello(){
     return 'Hello World!'
   }
-  logIn(){
-    localStorage.setItem('token','#')
-  }
-  logOut(){
-    localStorage.removeItem('token')
-  }
   // sayHello1(){
   //   return 'Hello World!'
   // }
