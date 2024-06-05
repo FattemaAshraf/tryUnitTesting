@@ -1,8 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthService } from './auth.service';
+import { AuthService, Post } from './auth.service';
 import { LoginService } from './login.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -40,15 +44,50 @@ describe('AuthService', () => {
     mySpy.myAuth.and.returnValue(new LoginService().isLogin() + 'x');
     expect(mySpy.myAuth()).toBe('truex', 'wrong Data!');
   });
+  //entry level
   //to avoid asynchoronys timed out
-  it('should get data post by postId successfully', (done:DoneFn) => {
+  it('should get data post by postId successfully', (done: DoneFn) => {
     service.getPost(1).subscribe({
       next: (post) => {
-        console.log(post);
+        //console.log(post);
         expect(post.id).toEqual(1);
         //data is ready
-        done()
+        done();
       },
     });
   });
+});
+
+describe('AuthService - mock data', () => {
+    let service: AuthService;
+    let httpMock: HttpTestingController;
+    let postMoka: Post = {
+      userId: 2,
+      id: 2,
+      title: 'test',
+      body: 'test',
+    };
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+      });
+      service = TestBed.inject(AuthService);
+      httpMock = TestBed.inject(HttpTestingController);
+    });
+
+    it('mus get data as excpected mock data', () => {
+      service.getPost(2).subscribe({
+        next: (post) => {
+          console.log(post);
+          expect(post).toEqual(postMoka);
+        },
+      });
+      //make rquest fake to check data and its fields
+      let req = httpMock.expectOne(
+        `https://jsonplaceholder.typicode.com/posts/2`
+      );
+      req.flush(postMoka);
+      //check any requests not implemented
+      httpMock.verify;
+    });
 });
