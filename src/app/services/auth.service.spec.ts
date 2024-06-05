@@ -29,4 +29,12 @@ describe('AuthService', () => {
     //expect(service.isAuth()).toBeTruthy();
     expect(!service.isAuth()).toBeFalsy();
   });
+
+  //try Spay to fake data
+  it('getting fake data using spay', () => {
+    //basName is optional, methodNames is array of meth
+    const mySpy = jasmine.createSpyObj('', ['myAuth']);
+    mySpy.myAuth.and.returnValue(new LoginService().isLogin()+'x')
+    expect(mySpy.myAuth()).toBe('truex','wrong Data!')
+  });
 });
