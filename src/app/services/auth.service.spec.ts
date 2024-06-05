@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
 import { LoginService } from './login.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -9,9 +10,11 @@ describe('AuthService', () => {
   //before every test they make instance new to before it func to reset the instance
   //clean up the instance brfore each test
   beforeEach(() => {
-    // TestBed.configureTestingModule({});
-    // service = TestBed.inject(AuthService);
-    service = new AuthService(new LoginService());
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule],
+    });
+    service = TestBed.inject(AuthService);
+    //service = new AuthService(new LoginService(), new HttpClient());
 
     //difference between
     //Dependency Injection (TestBed): When using TestBed.inject(AuthService), Angular's dependency injection system is utilized. This approach allows for more flexibility, such as using mocked or stubbed versions of services, and ensures that all dependencies are provided and managed by Angular.
@@ -34,7 +37,18 @@ describe('AuthService', () => {
   it('getting fake data using spay', () => {
     //basName is optional, methodNames is array of meth
     const mySpy = jasmine.createSpyObj('', ['myAuth']);
-    mySpy.myAuth.and.returnValue(new LoginService().isLogin()+'x')
-    expect(mySpy.myAuth()).toBe('truex','wrong Data!')
+    mySpy.myAuth.and.returnValue(new LoginService().isLogin() + 'x');
+    expect(mySpy.myAuth()).toBe('truex', 'wrong Data!');
+  });
+  //to avoid asynchoronys timed out
+  it('should get data post by postId successfully', (done:DoneFn) => {
+    service.getPost(1).subscribe({
+      next: (post) => {
+        console.log(post);
+        expect(post.id).toEqual(1);
+        //data is ready
+        done()
+      },
+    });
   });
 });
