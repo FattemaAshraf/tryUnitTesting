@@ -27,4 +27,20 @@ describe('LoginComponent', () => {
   it('can Login', () => {
     expect(component.logIn('fatma', '123')).toBeTruthy();
   });
+  it('can Login toggle', () => {
+    expect(component.isLoggedIn).toBe(false,'false at 1 fr');
+    component.isLogin();
+    expect(component.isLoggedIn).toBe(true,'clicked');
+    component.isLogin();
+    expect(component.isLoggedIn).toBe(false,'clicked second');
+
+
+  });
+  it('can Login toggle loginState', () => {
+    // check string like this or not
+    expect(component.loginState).toMatch(/out/)
+    component.isLogin()
+    expect(component.loginState).toMatch(/in/)
+  });
+
 });

@@ -6,21 +6,29 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule,HttpClientModule],
+  imports: [FormsModule, HttpClientModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-userName: string = ''
-password: string = ''
-constructor(private authService:AuthService) {
-
-}
-  logIn(userName:string,password:string):boolean{
-    return this.authService.canLogin(userName,password)
+  userName: string = '';
+  password: string = '';
+  isLoggedIn: boolean;
+  constructor(private authService: AuthService) {
+    this.isLoggedIn = false;
+  }
+  logIn(userName: string, password: string): boolean {
+    return this.authService.canLogin(userName, password);
     //localStorage.setItem('token','#')
   }
-  logOut(){
-    localStorage.removeItem('token')
+  logOut() {
+    localStorage.removeItem('token');
+  }
+  isLogin(): void {
+    this.isLoggedIn =! this.isLoggedIn;
+  }
+
+  get loginState():string {
+    return `User is ${this.isLoggedIn ? 'logged in' : 'not logged out'}`;
   }
 }

@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { LoginService } from './login.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
- export declare interface Post {
-  userId:number,
-  id:number,
-  title:string,
-  body:string
+export declare interface Post {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private loginService: LoginService, private httpClient:HttpClient ) {}
+  constructor(
+    private loginService: LoginService,
+    private httpClient: HttpClient
+  ) {}
   isAuth(): boolean {
     return this.loginService.isLogin();
   }
@@ -23,7 +26,13 @@ export class AuthService {
       return false;
     }
   }
-  getPost(postId:number):Observable<Post>{
-return this.httpClient.get<Post>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+  getPost(postId: number): Observable<Post> {
+    return this.httpClient
+      .get<Post>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+      // .pipe(
+      //   map((data) => {
+      //     return { ...data, hello: 'hello' };
+      //   })
+      // );
   }
 }
